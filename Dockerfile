@@ -1,5 +1,5 @@
 # Stage 1: Build the application with Maven
-FROM openjdk:17-jdk-alpine AS build
+FROM eclipse-temurin:17-jdk-alpine AS build
 
 WORKDIR /app
 
@@ -20,7 +20,7 @@ COPY src src
 RUN ./mvnw package -DskipTests
 
 # Stage 2: Create smaller runtime image
-FROM openjdk:17-jdk-alpine
+FROM eclipse-temurin:17-jre-alpine
 
 WORKDIR /app
 
