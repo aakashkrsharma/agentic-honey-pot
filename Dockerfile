@@ -25,7 +25,7 @@ FROM openjdk:17-jdk-alpine
 WORKDIR /app
 
 # Copy the jar from the build stage and rename it for simplicity
-COPY --from=build /app/target/first-deploy-0.0.1-SNAPSHOT.jar app.jar
+COPY --from=build /app/target/agentic-honey-pot-0.0.1-SNAPSHOT.jar app.jar
 
 # Expose port 8080 to the outside
 EXPOSE 8080
