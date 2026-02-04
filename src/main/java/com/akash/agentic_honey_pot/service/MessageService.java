@@ -6,6 +6,8 @@ import com.akash.agentic_honey_pot.extractor.IntelligenceExtractor;
 import com.akash.agentic_honey_pot.model.Conversation;
 import com.akash.agentic_honey_pot.dto.MessageRequest;
 import com.akash.agentic_honey_pot.dto.MessageResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,6 +23,8 @@ public class MessageService {
 
     private final Map<String, Conversation> conversations = new ConcurrentHashMap<>();
 
+    private static final Logger log = LoggerFactory.getLogger(MessageService.class);
+
     public MessageService(ScamDetector scamDetector, AgentResponder agentResponder, IntelligenceExtractor intelligenceExtractor){
         this.scamDetector = scamDetector;
         this.agentResponder = agentResponder;
@@ -29,12 +33,12 @@ public class MessageService {
 
     public MessageResponse respondToMessage(MessageRequest request) {
 
-        if (request.getConversationId() == null) {
-            throw new IllegalArgumentException("conversation_id is required");
+        if (request.getSessionId() == null) {
+            throw new IllegalArgumentException("sessionId is required");
         }
 
         Conversation conversation = conversations.computeIfAbsent(
-                request.getConversationId(),
+                request.getSessionId(),
                 id -> new Conversation()
         );
 
@@ -42,12 +46,17 @@ public class MessageService {
 
         MessageResponse response = new MessageResponse();
 
-        boolean scamDetected = conversation.isScamDetected() || scamDetector.isScamMessage(request.getMessage());
+        if (request.getMessage() == null || request.getMessage().getText() == null) {
+            throw new IllegalArgumentException("message.text is required");
+        }
+
+        String text = request.getMessage().getText();
+        boolean scamDetected = conversation.isScamDetected() || scamDetector.isScamMessage(text);
         conversation.setScamDetected(scamDetected);
 
         if(scamDetected){
             conversation.setScamTurns(conversation.getScamTurns() + 1);
-            intelligenceExtractor.extract(request.getMessage(), conversation);
+            intelligenceExtractor.extract(text, conversation);
         }
 
         response.setScamDetected(scamDetected);
@@ -65,6 +74,8 @@ public class MessageService {
         intel.setPhishingUrls(new ArrayList<>(conversation.getPhishingUrls()));
 
         response.setExtractedIntelligence(intel);
+
+        log.info("Session {} | turn {} | scamDetected {}", request.getSessionId(), conversation.getTotalTurns(), scamDetected);
 
         return response;
     }
