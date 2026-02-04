@@ -12,7 +12,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -37,9 +36,14 @@ class MessageServiceTest {
 
     @Test
     void shouldDetectScamOnFirstMessage() {
+        MessageRequest.MessagePayload payload = new MessageRequest.MessagePayload();
+        payload.setSender("scammer");
+        payload.setText("Your account is blocked, verify immediately");
+        payload.setTimestamp(System.currentTimeMillis());
+
         MessageRequest request = new MessageRequest();
-        ReflectionTestUtils.setField(request, "conversationId", "conv1");
-        ReflectionTestUtils.setField(request, "message", "Your account is blocked, verify immediately");
+        request.setSessionId("test-session-01");
+        request.setMessage(payload);
 
         when(scamDetector.isScamMessage(anyString())).thenReturn(true);
         when(agentResponder.generateReply(any())).thenReturn("Please share details");
@@ -52,14 +56,24 @@ class MessageServiceTest {
     }
 
     @Test
-    void shouldPersistScamAcrossMessages() {
+    void shouldPersistScamAcrossMessagesOnceDetected() {
+        MessageRequest.MessagePayload payload1 = new MessageRequest.MessagePayload();
+        payload1.setSender("scammer");
+        payload1.setText("Your account is blocked, verify immediately");
+        payload1.setTimestamp(System.currentTimeMillis());
+
         MessageRequest first = new MessageRequest();
-        ReflectionTestUtils.setField(first, "conversationId", "conv2");
-        ReflectionTestUtils.setField(first, "message", "urgent kyc update");
+        first.setSessionId("test-session-02");
+        first.setMessage(payload1);
+
+        MessageRequest.MessagePayload payload2 = new MessageRequest.MessagePayload();
+        payload2.setSender("scammer");
+        payload2.setText("please send details");
+        payload2.setTimestamp(System.currentTimeMillis());
 
         MessageRequest second = new MessageRequest();
-        ReflectionTestUtils.setField(second, "conversationId", "conv2");
-        ReflectionTestUtils.setField(second, "message", "please send details");
+        second.setSessionId("test-session-02");
+        second.setMessage(payload2);
 
         when(scamDetector.isScamMessage(anyString()))
                 .thenReturn(true)   // first message
@@ -77,9 +91,14 @@ class MessageServiceTest {
 
     @Test
     void shouldExtractIntelligenceWhenScamDetected() {
+        MessageRequest.MessagePayload payload = new MessageRequest.MessagePayload();
+        payload.setSender("scammer");
+        payload.setText("Pay to test@upi");
+        payload.setTimestamp(System.currentTimeMillis());
+
         MessageRequest request = new MessageRequest();
-        ReflectionTestUtils.setField(request, "conversationId", "conv3");
-        ReflectionTestUtils.setField(request, "message", "Pay to test@upi");
+        request.setSessionId("test-session-03");
+        request.setMessage(payload);
 
         when(scamDetector.isScamMessage(anyString())).thenReturn(true);
         when(agentResponder.generateReply(any())).thenReturn("ok");
@@ -89,5 +108,4 @@ class MessageServiceTest {
         verify(intelligenceExtractor, times(1))
                 .extract(anyString(), any(Conversation.class));
     }
-
 }
