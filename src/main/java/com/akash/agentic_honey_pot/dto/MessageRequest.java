@@ -10,7 +10,7 @@ public class MessageRequest {
 
     private String sessionId;
     private MessagePayload message;
-    private List<Object> conversationHistory;
+//    private List<Object> conversationHistory;
     private Metadata metadata;
 
     @Getter
