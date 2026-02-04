@@ -28,18 +28,18 @@ public class HeaderLoggingFilter extends OncePerRequestFilter {
             FilterChain filterChain)
             throws ServletException, IOException {
 
-        log.info("=== INCOMING REQUEST ===");
-        log.info("Method: {}", request.getMethod());
-        log.info("URI: {}", request.getRequestURI());
-        log.info("Content-Type: {}", request.getContentType());
-
-        Enumeration<String> headerNames = request.getHeaderNames();
-        if (headerNames != null) {
-            while (headerNames.hasMoreElements()) {
-                String name = headerNames.nextElement();
-                log.info("Header {} : {}", name, request.getHeader(name));
-            }
-        }
+//        log.info("=== INCOMING REQUEST ===");
+//        log.info("Method: {}", request.getMethod());
+//        log.info("URI: {}", request.getRequestURI());
+//        log.info("Content-Type: {}", request.getContentType());
+//
+//        Enumeration<String> headerNames = request.getHeaderNames();
+//        if (headerNames != null) {
+//            while (headerNames.hasMoreElements()) {
+//                String name = headerNames.nextElement();
+//                log.info("Header {} : {}", name, request.getHeader(name));
+//            }
+//        }
 
         filterChain.doFilter(request, response);
     }
