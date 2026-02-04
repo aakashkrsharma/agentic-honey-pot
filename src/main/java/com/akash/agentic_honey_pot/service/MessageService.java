@@ -33,10 +33,12 @@ public class MessageService {
 
     public MessageResponse respondToMessage(MessageRequest request) {
 
+        // Exit early if sessionId is missing (required to track conversation state)
         if (request.getSessionId() == null) {
             throw new IllegalArgumentException("sessionId is required");
         }
 
+        // Get previous conversation if none exist create new conversation
         Conversation conversation = conversations.computeIfAbsent(
                 request.getSessionId(),
                 id -> new Conversation()
@@ -44,6 +46,7 @@ public class MessageService {
 
         conversation.setTotalTurns(conversation.getTotalTurns() + 1);
 
+        // Prepare API response object
         MessageResponse response = new MessageResponse();
 
         if (request.getMessage() == null || request.getMessage().getText() == null) {
@@ -54,6 +57,7 @@ public class MessageService {
         boolean scamDetected = conversation.isScamDetected() || scamDetector.isScamMessage(text);
         conversation.setScamDetected(scamDetected);
 
+        // Update message turns in conversation and extract upi id, bank details, phishing URL if this is scam message
         if(scamDetected){
             conversation.setScamTurns(conversation.getScamTurns() + 1);
             intelligenceExtractor.extract(text, conversation);
@@ -63,11 +67,13 @@ public class MessageService {
         response.setAgentActive(scamDetected);
         response.setReply(agentResponder.generateReply(conversation));
 
+        // Populate engagement metrics in response
         MessageResponse.EngagementMetrics metrics = new MessageResponse.EngagementMetrics();
         metrics.setConversationTurns(conversation.getTotalTurns());
 
         response.setEngagementMetrics(metrics);
 
+        // Update extracted upi id, bank details, phishing URL in the response
         MessageResponse.ExtractedIntelligence intel = new MessageResponse.ExtractedIntelligence();
         intel.setUpiIds(new ArrayList<>(conversation.getUpiIds()));
         intel.setBankAccounts(conversation.getBankAccounts());
