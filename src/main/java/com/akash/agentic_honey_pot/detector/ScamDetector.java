@@ -10,6 +10,7 @@ public class ScamDetector {
     private static final List<String> SCAM_KEYWORDS = List.of(
             "account blocked",
             "verify immediately",
+            "immediately",
             "kyc",
             "send money",
             "upi",
