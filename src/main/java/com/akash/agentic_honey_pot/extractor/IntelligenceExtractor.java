@@ -5,8 +5,11 @@ import com.akash.agentic_honey_pot.model.Conversation;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
+import java.util.stream.Collectors;
 
 import static com.akash.agentic_honey_pot.constants.RegexPatterns.*;
 import static com.akash.agentic_honey_pot.constants.RegexPatterns.IFSC_PATTERN;
@@ -29,20 +32,34 @@ public class IntelligenceExtractor {
 
         Matcher accMatcher = BANK_ACCOUNT_PATTERN.matcher(message);
         Matcher ifscMatcher = IFSC_PATTERN.matcher(message);
-        List<String> accounts = new ArrayList<>();
+
+        Set<String> accounts = new HashSet<>();
         while (accMatcher.find()){
             accounts.add(accMatcher.group());
         }
-        List<String> ifscCodes = new ArrayList<>();
+        Set<String> ifscCodes = new HashSet<>();
         while (ifscMatcher.find()){
             ifscCodes.add(ifscMatcher.group());
         }
-        int size = Math.min(accounts.size(),ifscCodes.size());
-        for(int i=0;i<size;i++){
+
+        List<String> accountList = new ArrayList<>(accounts);
+        List<String> ifscCodeList = new ArrayList<>(ifscCodes);
+
+        for(int i=0;i<accountList.size();i++){
             MessageResponse.BankAccounts bank = new MessageResponse.BankAccounts();
-            bank.setAccountNumber(accounts.get(i));
-            bank.setIfsc(ifscCodes.get(i));
-            conversation.getBankAccounts().add(bank);
+            bank.setAccountNumber(accountList.get(i));
+            if(i < ifscCodeList.size()){
+                bank.setIfsc(ifscCodeList.get(i));
+            }else{
+                bank.setIfsc(null);
+            }
+            Set<String> existingAccounts = conversation.getBankAccounts()
+                            .stream()
+                                    .map(MessageResponse.BankAccounts::getAccountNumber)
+                                            .collect(Collectors.toSet());
+            if(!existingAccounts.contains(accountList.get(i))){
+                conversation.getBankAccounts().add(bank);
+            }
         }
     }
 }
