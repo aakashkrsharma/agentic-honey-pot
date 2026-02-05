@@ -1,14 +1,9 @@
-package com.akash.agentic_honey_pot.detector;
-
-import org.springframework.stereotype.Component;
+package com.akash.agenticHoneypot.constants;
 
 import java.util.List;
-import java.util.Locale;
 
-@Component
-public class ScamDetector {
-
-    private static final List<String> SCAM_KEYWORDS = List.of(
+public class ScamKeywords {
+    public static final List<String> SCAM_KEYWORDS = List.of(
             // urgency & pressure
             "urgent",
             "immediately",
@@ -40,21 +35,4 @@ public class ScamDetector {
             "security department",
             "verify your identity"
     );
-
-    public boolean isScamMessage(String message) {
-        if (message == null) return false;
-
-        String normalized = message.toLowerCase(Locale.ROOT);
-
-        int scamScore = 0;
-        for(String keyword : SCAM_KEYWORDS){
-            if(normalized.contains(keyword)){
-                scamScore++;
-            }
-        }
-
-        boolean scamDetected = scamScore >= 2;
-
-        return scamDetected;
-    }
 }

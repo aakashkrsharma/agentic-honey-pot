@@ -1,7 +1,7 @@
-package com.akash.agentic_honey_pot.controller;
+package com.akash.agenticHoneypot.controller;
 
-import com.akash.agentic_honey_pot.dto.MessageRequest;
-import com.akash.agentic_honey_pot.service.MessageService;
+import com.akash.agenticHoneypot.dto.MessageRequest;
+import com.akash.agenticHoneypot.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

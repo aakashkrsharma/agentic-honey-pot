@@ -1,12 +1,10 @@
-package com.akash.agentic_honey_pot;
+package com.akash.agenticHoneypot;
 
-import com.akash.agentic_honey_pot.agent.AgentResponder;
-import com.akash.agentic_honey_pot.detector.ScamDetector;
-import com.akash.agentic_honey_pot.dto.MessageRequest;
-import com.akash.agentic_honey_pot.dto.MessageResponse;
-import com.akash.agentic_honey_pot.extractor.IntelligenceExtractor;
-import com.akash.agentic_honey_pot.model.Conversation;
-import com.akash.agentic_honey_pot.service.MessageService;
+import com.akash.agenticHoneypot.dto.MessageRequest;
+import com.akash.agenticHoneypot.dto.MessageResponse;
+import com.akash.agenticHoneypot.extractor.IntelligenceExtractor;
+import com.akash.agenticHoneypot.model.Conversation;
+import com.akash.agenticHoneypot.service.MessageService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -23,12 +21,6 @@ import static org.mockito.Mockito.*;
 class MessageServiceTest {
 
     @Mock
-    private ScamDetector scamDetector;
-
-    @Mock
-    private AgentResponder agentResponder;
-
-    @Mock
     private IntelligenceExtractor intelligenceExtractor;
 
     @InjectMocks
@@ -38,15 +30,12 @@ class MessageServiceTest {
     void shouldDetectScamOnFirstMessage() {
         MessageRequest.MessagePayload payload = new MessageRequest.MessagePayload();
         payload.setSender("scammer");
-        payload.setText("Your account is blocked, verify immediately");
+        payload.setText("Your account blocked, verify immediately by completing kyc");
         payload.setTimestamp(System.currentTimeMillis());
 
         MessageRequest request = new MessageRequest();
         request.setSessionId("test-session-01");
         request.setMessage(payload);
-
-        when(scamDetector.isScamMessage(anyString())).thenReturn(true);
-        when(agentResponder.generateReply(any())).thenReturn("Please share details");
 
         MessageResponse response = messageService.respondToMessage(request);
 
@@ -59,7 +48,7 @@ class MessageServiceTest {
     void shouldPersistScamAcrossMessagesOnceDetected() {
         MessageRequest.MessagePayload payload1 = new MessageRequest.MessagePayload();
         payload1.setSender("scammer");
-        payload1.setText("Your account is blocked, verify immediately");
+        payload1.setText("Your account blocked, verify immediately by completing kyc");
         payload1.setTimestamp(System.currentTimeMillis());
 
         MessageRequest first = new MessageRequest();
@@ -75,12 +64,6 @@ class MessageServiceTest {
         second.setSessionId("test-session-02");
         second.setMessage(payload2);
 
-        when(scamDetector.isScamMessage(anyString()))
-                .thenReturn(true)   // first message
-                .thenReturn(false); // second message
-
-        when(agentResponder.generateReply(any())).thenReturn("reply");
-
         MessageResponse r1 = messageService.respondToMessage(first);
         MessageResponse r2 = messageService.respondToMessage(second);
 
@@ -93,15 +76,12 @@ class MessageServiceTest {
     void shouldExtractIntelligenceWhenScamDetected() {
         MessageRequest.MessagePayload payload = new MessageRequest.MessagePayload();
         payload.setSender("scammer");
-        payload.setText("Pay to test@upi");
+        payload.setText("Your account blocked, verify immediately by completing kyc, you can pay to test@upi to fasten the process");
         payload.setTimestamp(System.currentTimeMillis());
 
         MessageRequest request = new MessageRequest();
         request.setSessionId("test-session-03");
         request.setMessage(payload);
-
-        when(scamDetector.isScamMessage(anyString())).thenReturn(true);
-        when(agentResponder.generateReply(any())).thenReturn("ok");
 
         messageService.respondToMessage(request);
 

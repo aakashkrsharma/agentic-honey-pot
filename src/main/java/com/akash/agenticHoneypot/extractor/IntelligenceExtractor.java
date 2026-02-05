@@ -1,7 +1,7 @@
-package com.akash.agentic_honey_pot.extractor;
+package com.akash.agenticHoneypot.extractor;
 
-import com.akash.agentic_honey_pot.dto.MessageResponse;
-import com.akash.agentic_honey_pot.model.Conversation;
+import com.akash.agenticHoneypot.dto.MessageResponse;
+import com.akash.agenticHoneypot.model.Conversation;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -11,8 +11,8 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.stream.Collectors;
 
-import static com.akash.agentic_honey_pot.constants.RegexPatterns.*;
-import static com.akash.agentic_honey_pot.constants.RegexPatterns.IFSC_PATTERN;
+import static com.akash.agenticHoneypot.constants.RegexPatterns.*;
+import static com.akash.agenticHoneypot.constants.RegexPatterns.IFSC_PATTERN;
 
 @Component
 public class IntelligenceExtractor {
