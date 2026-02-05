@@ -17,6 +17,7 @@ public class ApiKeyFilter extends OncePerRequestFilter {
     private String apiKey;
 
     private static final String HEADER_NAME="x-api-key";
+    private static final String HEALTH_PATH="/health";
 
     @Override
     protected void doFilterInternal(
@@ -24,6 +25,12 @@ public class ApiKeyFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain
     ) throws ServletException, IOException {
+
+        String path = request.getRequestURI();
+        if(HEALTH_PATH.equals(path)){
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         String requestApiKey = request.getHeader(HEADER_NAME);
 
