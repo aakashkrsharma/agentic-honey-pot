@@ -1,4 +1,4 @@
-package com.akash.agentic_honey_pot.filter;
+package com.akash.agenticHoneypot.filter;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

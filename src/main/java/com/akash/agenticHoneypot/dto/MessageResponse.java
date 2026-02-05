@@ -1,4 +1,4 @@
-package com.akash.agentic_honey_pot.dto;
+package com.akash.agenticHoneypot.dto;
 
 import lombok.Getter;
 import lombok.Setter;

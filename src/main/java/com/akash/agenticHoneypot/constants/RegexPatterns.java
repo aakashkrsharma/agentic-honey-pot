@@ -1,4 +1,4 @@
-package com.akash.agentic_honey_pot.constants;
+package com.akash.agenticHoneypot.constants;
 
 import java.util.regex.Pattern;
 

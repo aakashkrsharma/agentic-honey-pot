@@ -1,4 +1,4 @@
-package com.akash.agentic_honey_pot;
+package com.akash.agenticHoneypot;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

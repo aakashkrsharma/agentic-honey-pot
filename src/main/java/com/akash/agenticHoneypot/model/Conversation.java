@@ -1,6 +1,6 @@
-package com.akash.agentic_honey_pot.model;
+package com.akash.agenticHoneypot.model;
 
-import com.akash.agentic_honey_pot.dto.MessageResponse;
+import com.akash.agenticHoneypot.dto.MessageResponse;
 import lombok.Getter;
 import lombok.Setter;
 

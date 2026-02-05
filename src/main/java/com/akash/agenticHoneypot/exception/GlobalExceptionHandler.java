@@ -1,4 +1,4 @@
-package com.akash.agentic_honey_pot.exception;
+package com.akash.agenticHoneypot.exception;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
