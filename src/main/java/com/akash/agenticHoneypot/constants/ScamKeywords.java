@@ -15,8 +15,8 @@ public class ScamKeywords {
             "time-sensitive",
 
             // account fear
-            "account blocked",
-            "account compromised",
+            "account is blocked",
+            "compromised",
             "account security",
             "account suspension",
             "suspicious transaction",
