@@ -8,7 +8,7 @@ public class RegexPatterns {
     public static final Pattern URL_PATTERN =
             Pattern.compile("https?://\\S+");
     public static final Pattern BANK_ACCOUNT_PATTERN =
-            Pattern.compile("\\b\\d{9,18}\\b");
+            Pattern.compile("\\b\\d{11,18}\\b");
     public static final Pattern IFSC_PATTERN =
             Pattern.compile("\\b[A-Z]{4}0[A-Z0-9]{6}\\b");
 }

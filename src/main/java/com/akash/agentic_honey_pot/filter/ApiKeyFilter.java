@@ -25,12 +25,12 @@ public class ApiKeyFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
 
-//        String requestApiKey = request.getHeader(HEADER_NAME);
-//
-//        if(requestApiKey == null || !requestApiKey.equals(apiKey)){
-//            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-//            return;
-//        }
+        String requestApiKey = request.getHeader(HEADER_NAME);
+
+        if(requestApiKey == null || !requestApiKey.equals(apiKey)){
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
+        }
 
         filterChain.doFilter(request, response);
     }
