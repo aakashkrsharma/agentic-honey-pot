@@ -1,6 +1,7 @@
 package com.akash.agenticHoneypot.controller;
 
 import com.akash.agenticHoneypot.dto.MessageRequest;
+import com.akash.agenticHoneypot.dto.MessageResponse;
 import com.akash.agenticHoneypot.service.MessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,9 +29,24 @@ public class MessageController {
     public ResponseEntity<?> respondToMessage(@RequestBody(required = false) MessageRequest messageRequest){
 
         if(messageRequest == null){
-            return ResponseEntity.badRequest().body(Map.of("error","Request body is missing or invalid"));
+            // Response structure as per hackathon
+            return ResponseEntity.badRequest()
+                    .body(Map.of("status", "error", "reply", "Invalid request"));
+            // Old Response
+//            return ResponseEntity.badRequest().body(Map.of("error","Request body is missing or invalid"));
         }
-        return ResponseEntity.ok(messageService.respondToMessage(messageRequest));
+
+        MessageResponse response = messageService.respondToMessage(messageRequest);
+        // Response structure as per hackathon
+        return ResponseEntity.ok(
+                Map.of(
+                        "status","success",
+                        "reply",response.getReply()
+                )
+        );
+
+        // Old Response
+//        return ResponseEntity.ok(messageService.respondToMessage(messageRequest));
     }
 
     @GetMapping("/health")
