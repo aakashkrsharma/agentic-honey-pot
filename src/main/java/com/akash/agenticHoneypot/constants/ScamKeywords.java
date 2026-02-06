@@ -13,6 +13,7 @@ public class ScamKeywords {
             "time is running out",
             "time is critical",
             "time-sensitive",
+            "today",
 
             // account fear
             "account is blocked",
@@ -21,6 +22,9 @@ public class ScamKeywords {
             "account suspension",
             "suspicious transaction",
             "fraudulent transaction",
+            "verify",
+            "bank account",
+            "blocked",
 
             // credential harvesting
             "share your account number",
