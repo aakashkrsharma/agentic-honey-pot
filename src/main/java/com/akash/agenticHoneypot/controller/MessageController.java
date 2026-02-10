@@ -30,23 +30,22 @@ public class MessageController {
 
         if(messageRequest == null){
             // Response structure as per hackathon
-            return ResponseEntity.badRequest()
-                    .body(Map.of("status", "error", "reply", "Invalid request"));
-            // Old Response
-//            return ResponseEntity.badRequest().body(Map.of("error","Request body is missing or invalid"));
+//            return ResponseEntity.badRequest()
+//                    .body(Map.of("status", "error", "reply", "Invalid request"));
+
+            return ResponseEntity.badRequest().body(Map.of("error","Request body is missing or invalid"));
         }
 
-        MessageResponse response = messageService.respondToMessage(messageRequest);
         // Response structure as per hackathon
-        return ResponseEntity.ok(
-                Map.of(
-                        "status","success",
-                        "reply",response.getReply()
-                )
-        );
+//        MessageResponse response = messageService.respondToMessage(messageRequest);
+//        return ResponseEntity.ok(
+//                Map.of(
+//                        "status","success",
+//                        "reply",response.getReply()
+//                )
+//        );
 
-        // Old Response
-//        return ResponseEntity.ok(messageService.respondToMessage(messageRequest));
+        return ResponseEntity.ok(messageService.respondToMessage(messageRequest));
     }
 
     @GetMapping("/health")

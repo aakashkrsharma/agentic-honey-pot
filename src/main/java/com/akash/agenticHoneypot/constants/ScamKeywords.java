@@ -14,9 +14,12 @@ public class ScamKeywords {
             "time is critical",
             "time-sensitive",
             "today",
+            "act now",
+            "limited time",
 
             // account fear
             "account is blocked",
+            "account will be blocked",
             "compromised",
             "account security",
             "account suspension",
@@ -25,11 +28,12 @@ public class ScamKeywords {
             "verify",
             "bank account",
             "blocked",
+            "account will be upgraded",
+            "update your account",
 
             // credential harvesting
             "share your account number",
-            "share your otp",
-            "last otp",
+            "otp",
             "upi pin",
             "debit card",
             "registered mobile number",
@@ -37,6 +41,36 @@ public class ScamKeywords {
             // compliance / authority
             "kyc",
             "security department",
-            "verify your identity"
+
+            // lottery / reward bait
+            "you won",
+            "lottery",
+            "cash prize",
+            "prize money",
+            "reward amount",
+            "lakh",
+            "jackpot",
+
+            // payment to claim prize
+            "small payment",
+            "processing fee",
+            "claim your prize",
+            "unlock amount",
+            "activation fee",
+            "pay to withdraw",
+            "transfer money",
+
+            // common scam typos / tricks
+            "ruppes",
+            "ruppess",
+            "acount",
+            "acct",
+            "banking details",
+            "upi id",
+
+            // bank name impersonation
+            "sbi",
+            "icici",
+            "hdfc"
     );
 }
