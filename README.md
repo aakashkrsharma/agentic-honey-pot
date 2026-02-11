@@ -7,6 +7,20 @@ The system maintains conversation state across multiple turns and avoids reveali
 
 ---
 
+## 🚀 Live Demo
+
+You can try the honeypot simulation here:
+
+👉 **Frontend App:**  
+https://aakashkrsharma.github.io/agentic-honey-pot-fe/
+
+This interactive UI allows users to simulate scam conversations and observe:
+- Scam detection behavior
+- Agent engagement strategy
+- Extracted intelligence (UPI IDs, bank accounts, phishing URLs)
+
+---
+
 ## Architecture
 - **Spring Boot REST API**
 - **Stateful conversation tracking** using in-memory storage
@@ -67,9 +81,23 @@ x-api-key: <your-api-key>
 
 ---
 
-## Security
-- API secured using x-api-key header
-- Unauthorized requests return HTTP 401
+## Features
+
+- Multi-turn conversation tracking
+- Sticky scam mode activation
+- Keyword-based scam scoring system
+- Regex-based intelligence extraction
+- Dynamic agent reply generation
+- RESTful architecture
+
+---
+
+## Security & CORS
+
+- CORS enabled for frontend integration
+- Designed for demo and educational use
+- Not intended for production deployment without authentication and rate limiting
+
 
 ---
 
@@ -78,3 +106,71 @@ x-api-key: <your-api-key>
 - Compatible with automated honeypot testing tools
 
 ---
+
+## Run Locally
+
+1. Clone the repository
+2. Configure application.properties if needed
+3. Run:
+
+mvn spring-boot:run
+
+The API will start at:
+http://localhost:8080
+
+---
+
+### Health Check
+
+GET /health
+
+Response:
+"OK"
+
+---
+
+## Limitations
+
+- Uses keyword-based detection (not ML-based)
+- In-memory conversation storage (resets on restart)
+- Not optimized for high concurrency
+
+---
+
+## Future Enhancements
+
+- Replace keyword-based detection with ML/NLP model
+- Persist conversations in a database instead of in-memory storage
+- Add rate limiting and authentication for production hardening
+- Add dashboard UI to visualize extracted scam intelligence
+
+---
+
+## Architecture Diagram
+````
+       ┌──────────────────────────────┐
+       │      React Frontend          │
+       │  (GitHub Pages Deployment)   │
+       └───────────────┬──────────────┘
+                       │
+                       │ HTTP (REST API)
+                       ▼
+       ┌──────────────────────────────┐
+       │     Spring Boot Backend      │
+       │  /api/honeypot/message       │
+       └───────────────┬──────────────┘
+                       │
+       ┌───────────────┼────────────────────────┐
+       ▼               ▼                        ▼
+┌────────────────┐ ┌────────────────┐ ┌──────────────────┐
+│ Scam Detector  │ │ Conversation   │ │ Intelligence     │
+│ (Keyword +     │ │ State Manager  │ │ Extractor        │
+│ Scoring Logic) │ │ (In-Memory)    │ │ (Regex Parsing)  │
+└────────────────┘ └────────────────┘ └──────────────────┘
+        │                  │                        │
+        └──────────┬───────┴─────────────┬──────────┘
+                   ▼                     ▼
+            ┌──────────────────────────────┐
+            │     JSON Response Builder    │
+            │ scamDetected, reply, intel   │
+            └──────────────────────────────┘
